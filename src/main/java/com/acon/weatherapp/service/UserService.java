@@ -34,21 +34,10 @@ public class UserService {
                     throw new DuplicateException("중복된 회원입니다.",dto);
                 });
     }
-
     // 모든 유저 찾기 (사용자는 접근 x)
     public List<User> getAllUsers() {
         return userMapper.findAll();
     }
-    /* 회원 가입 시 , 유효성 검사 및 중복 체크 */
-//    public Map<String , String> validateHandling(Errors errors){
-//        Map<String , String> validatorResult = new HashMap<>();
-//
-//        for(FieldError error : errors.getFieldErrors()){
-//            String validKeyName = String.format("valid.%s", error.getField());
-//            validatorResult.put(validKeyName, error.getDefaultMessage());
-//        }
-//        return validatorResult;
-//    }
 
     // 회원 가입
     public RegisterDto.Response register(RegisterDto.Request dto) {

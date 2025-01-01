@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -53,12 +55,16 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String registerP(@Valid @ModelAttribute RegisterDto.Request dto , BindingResult result ,  Model model) {
-        if(result.hasErrors()){
-            model.addAttribute("");
-            model.addAttribute("valid_userId" , result.getFieldError().getDefaultMessage());
-            return "register";
-        }
+    public String registerP(@Valid @ModelAttribute RegisterDto.Request dto , Errors errors , Model model) {
+
+
+         if(errors.hasErrors()) {
+             for(FieldError fieldError :  errors.getFieldErrors()) {
+                 model.addAttribute( fieldError.getField(), fieldError.getDefaultMessage());
+             }
+             model.addAttribute("user" , dto);
+             return "register";
+         }
 
         RegisterDto.Response userInfo = userService.register(dto);
             model.addAttribute("userInfo"  , userInfo);
