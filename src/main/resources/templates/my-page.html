@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>마이페이지 입니다.</h1>
+
+    <div>
+        <div>
+            <h3>유저 아이디</h3>
+            <p th:text="${userInfo.userId}"></p>
+        </div>
+        <div>
+            <h3>이름</h3>
+            <p th:text="${userInfo.name}"></p>
+            <h3>성별</h3>
+            <p th:text="${userInfo.gender}"></p>
+        </div>
+
+        <div>
+            <h3>생년월일</h3>
+            <p th:text="${userInfo.birth}"></p>
+        </div>
+
+        <div>
+            <h3>핸드폰</h3>
+            <p th:text="${userInfo.phone}"></p>
+        </div>
+        <div>
+            <h3>주소</h3>
+            <p th:text="${userInfo.address}"></p>
+        </div>
+        <div>
+            <h3>가입 날짜</h3>
+            <p th:text="${#temporals.format(userInfo.createdAt, 'yyyy-MM-dd HH:mm')}"></p>
+        </div>
+
+
+    </div>
+
+
+
+</body>
+</html>
