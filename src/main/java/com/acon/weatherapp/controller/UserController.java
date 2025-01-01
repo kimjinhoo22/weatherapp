@@ -13,11 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -50,25 +47,21 @@ public class UserController {
     }
 
     @GetMapping("/register")
-    public String registerG(){
+    public String registerG(Model model) {
+
         return "register";
     }
 
     @PostMapping("/register")
-    public String registerP(@Valid @ModelAttribute("dto") RegisterDto.Request dto , Errors errors , Model model){
-        if(errors.hasErrors()){
-            model.addAttribute("userDto" , dto);
-
-            Map<String , String> validatorResult = userService.validateHandling(errors);
-            for( String key : validatorResult.keySet()){
-                model.addAttribute(key, validatorResult.get(key));
-            }
-
+    public String registerP(@Valid @ModelAttribute RegisterDto.Request dto , BindingResult result ,  Model model) {
+        if(result.hasErrors()){
+            model.addAttribute("");
+            model.addAttribute("valid_userId" , result.getFieldError().getDefaultMessage());
             return "register";
         }
 
         RegisterDto.Response userInfo = userService.register(dto);
-            model.addAttribute("userInfo", userInfo);
+            model.addAttribute("userInfo"  , userInfo);
             return "regisSuccess";
 
     }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeeaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -12,8 +12,10 @@
 
     <th:block th:if="${@userSession == null || @userSession.userId == null}">
         <form action="/user/login" method="post">
-            ID : <input type="text" name="userId" required><br>
-            Password : <input type="password" name="password" required><br>
+            ID : <input type="text" name="userId" required
+                        placeholder="아이디를 입력하세요" th:value="${user != null ? user.userId : ''}"><br>
+            Password : <input type="password" name="password" required
+                              placeholder="비밀번호를 입력하세요" th:value="${user != null ? user.password : ''}"><br>
             <button type="submit">로그인</button>
         </form>
     </th:block>

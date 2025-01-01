@@ -7,27 +7,54 @@
 <body>
     <h1>회원가입 페이지입니다.</h1>
 
-    <form method="post" action="/user/register" th:object="${dto}">
-        아이디: <input type="text" th:field="*{userId}" /><br>
-        <span th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}"></span>
-        비밀번호 : <input  type="password" name="password"><br>
-        비밀번호 확인 : <input type="password" name="confirmPassword"><br>
-        이름 : <input type="text" name="name"><br>
-        생년월일 : <input type="date" name="birth"><br><br>
-        성별 :
-        <label for="male">남성</label>
-        <input type="radio" id="male" name="gender" value="남자">
-        <label for="female">여성</label>
-        <input type="radio" id="female" name="gender" value="여자"><br>
+    <form method="post" action="/user/register" >
+        <div>
+            <label for="userId">아이디</label>
+            <input type="text" id="userId" name="userId" th:value="${user != null ? user.userId : ''}" />
+            <span th:if="${valid_userId}" th:text="${valid_userId}" style="color: red"></span>
 
-        주소 : <input type="text" name="address"><br>
-        핸드폰 번호 : <input type="text" name="phone"><br>
+        </div>
+        <div>
+            <label for="password">비밀번호</label>
+            <input type="password" id="password" name="password" th:value="${user != null ? user.password : ''}"/>
+<!--            <span th:errors="*{password}" th:if="${#fields.hasErrors('password')}"></span>-->
+        </div>
+        <div>
+            <label for="confirmPassword">비밀번호 확인</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" th:value="${user != null ? user.confirmPassword : ''}">
+<!--            <span th:errors="*{confirmPassword}" th:if="${#fields.hasErrors('confirmPassword')}"></span>-->
+        </div>
+        <div>
+            <label for="name">이름</label>
+            <input type="text" id="name" name="name" th:value="${user != null ? user.name : ''}">
+        </div>
+        <div>
+            <label for="birth">생년월일:</label>
+            <input type="date" id="birth" name="birth" th:value="${user != null ? user.birth : ''}"/>
+        </div>
+        <div>
+            <label>성별:</label>
+            <input type="radio" id="male" name="gender" value="남자" th:checked="${user != null && user.gender == '남자' }" />
+            <label for="male">남성</label>
+            <input type="radio" id="female" name="gender" value="여자"  th:checked="${user != null && user.gender == '여자' }"/>
+            <label for="female">여성</label>
+        </div>
+
+        <div>
+            <label for="address">주소:</label>
+            <input type="text" id="address" name="address" th:value="${user != null ? user.address : ''}"/>
+        </div>
+
+        <div>
+            <label for="phone">핸드폰 번호:</label>
+            <input type="text" id="phone" name="phone" th:value="${user != null ? user.phone : ''}"/>
+        </div>
 
         <button type="submit">회원가입 완료</button>
-        <div th:if="${errors != null}" style="color:red">
-            <p th:text="${errors}"></p>
-        </div>
+
+
     </form>
+    <p th:if="${message != null}" th:text="${message}" style="color: red"></p>
 
 
 </body>
