@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+  .limit{
+    background-color: lightgrey;
+  }
+</style>
+<body>
+
+<form action="/user/my-page/edit" method="post">
+    <div>
+      <h3>유저 아이디</h3>
+      <input type="text" name="userId" th:value="${userInfo.userId}" readonly class="limit">
+    </div>
+    <div>
+      <h3>이름</h3>
+      <input type="text" name="name" th:value="${userInfo.name}">
+      <h3>성별</h3>
+      <p th:text="${userInfo.gender}"></p>
+    </div>
+    <div>
+      <h3>생년월일</h3>
+      <input type="text" name="birth" th:value="${userInfo.birth}" readonly class="limit">
+    </div>
+    <div>
+      <h3>핸드폰</h3>
+      <input type="text" name="phone" th:value="${userInfo.phone}">
+    </div>
+    <div>
+      <h3>주소</h3>
+      <input type="text" name="address" th:value="${userInfo.address}">
+    </div>
+    <div>
+      <h3>가입 날짜</h3>
+      <input type="text" name="birth" th:value="${#temporals.format(userInfo.createdAt, 'yyyy-MM-dd HH:mm')}" readonly class="limit">
+    </div>
+  <button type="submit">수정 완료</button>
+</form>
+<a href="/user/my-page">취소</a>
+</body>
+</html>

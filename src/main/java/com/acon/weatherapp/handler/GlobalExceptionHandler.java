@@ -1,15 +1,13 @@
 package com.acon.weatherapp.handler;
 
-import com.acon.weatherapp.dto.RegisterDto;
+
 import com.acon.weatherapp.exception.DuplicateException;
 import com.acon.weatherapp.exception.NotFoundUserException;
 import com.acon.weatherapp.exception.NotMachedPasswordException;
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestAttribute;
+
 
 @ControllerAdvice
 public class GlobalExceptionHandler {

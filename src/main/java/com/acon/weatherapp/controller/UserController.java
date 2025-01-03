@@ -1,5 +1,4 @@
 package com.acon.weatherapp.controller;
-
 import com.acon.weatherapp.dto.LoginDto;
 import com.acon.weatherapp.dto.RegisterDto;
 import com.acon.weatherapp.dto.UserInfoDto;
@@ -12,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -80,6 +78,20 @@ public class UserController {
         return "my-page";
     }
 
+    @GetMapping("/my-page/edit")
+    public String my_page_edit( Model model){
+        String userId = userSession.getUserId();
+        UserInfoDto.Response userInfo = userService.getUserInfo(userId);
+        model.addAttribute("userInfo", userInfo);
+        return "my-page-edit";
+    }
+
+    @PostMapping("/my-page/edit")
+    public String my_page_edit_P(@ModelAttribute UserInfoDto.Request dto , Model model){
+        System.out.println(dto.getName());
+        userService.updateUser(dto);
+        return "redirect:/user/my-page";
+    }
 
 
 }

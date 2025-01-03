@@ -10,10 +10,8 @@ import com.acon.weatherapp.exception.NotMachedPasswordException;
 import com.acon.weatherapp.repository.UserMapper;
 import com.acon.weatherapp.session.UserSession;
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.Errors;
-import org.springframework.validation.FieldError;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.*;
@@ -28,7 +26,7 @@ public class UserService {
 
 
     // 아이디 중복 회원 검증
-    private void validateDuplicateUser(RegisterDto.Request dto) {
+   public void validateDuplicateUser(RegisterDto.Request dto) {
         userMapper.findByUserId(dto.getUserId())
                 .ifPresent(user -> {
                     throw new DuplicateException("중복된 회원입니다.",dto);
@@ -40,6 +38,7 @@ public class UserService {
     }
 
     // 회원 가입
+    @Transactional
     public RegisterDto.Response register(RegisterDto.Request dto) {
         if(!dto.getPassword().equals(dto.getConfirmPassword())){
             throw new NotMachedPasswordException("비밀번호 확인이 일치하지 않습니다.", dto);
@@ -73,5 +72,10 @@ public class UserService {
                 .map(UserInfoDto.Response::from)
                 .orElse(null);
 
+    }
+
+    public void updateUser(UserInfoDto.Request dto) {
+         userMapper.update(dto.toEntity());
+        System.out.println(" 저장 완료 ");
     }
 }

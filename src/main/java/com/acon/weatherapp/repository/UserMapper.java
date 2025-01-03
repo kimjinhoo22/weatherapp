@@ -6,6 +6,7 @@ import com.acon.weatherapp.entity.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +24,6 @@ public interface UserMapper {
     @Select("SELECT * FROM users")
     List<User> findAll();
 
-
-
+    @Update("UPDATE users SET name= #{name} , phone = #{phone}, address= #{address} WHERE userid = #{userId}")
+    void update(User user);
 }

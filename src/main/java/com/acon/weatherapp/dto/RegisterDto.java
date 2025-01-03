@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -16,7 +15,6 @@ public class RegisterDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Request{
-
         @Pattern(regexp = "^[a-zA-Z][a-zA-Z0-9]{5,20}$", message = "아이디는 5~20자의 영문, 숫자로 구성되어야 합니다.")
         private String userId;
         @Pattern(regexp = "^(?=.*[a-z])(?=.*\\d)(?=.*[!@#$%^&*()_+])[A-Za-z\\d!@#$%^&*()_+]{8,20}$",
@@ -35,6 +33,10 @@ public class RegisterDto {
         @NotBlank(message = "핸드폰 번호를 입력하세요")
         private String phone;
 
+        public Request(String userId){
+            this.userId = userId;
+        }
+
         // RequestDTO -> User
         public User toEntity() {
             User user = User.builder()
@@ -51,7 +53,6 @@ public class RegisterDto {
             return  user;
         }
     }
-
     @Getter
     @Builder
     public static class Response {

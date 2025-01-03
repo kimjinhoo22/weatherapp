@@ -1,13 +1,35 @@
 package com.acon.weatherapp.dto;
 
 import com.acon.weatherapp.entity.User;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class UserInfoDto {
+
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Request{
+        private String userId;
+        private String name;
+        private String phone;
+        private String address;
+
+        public User toEntity() {
+            User user = User.builder()
+                    .userId(userId)
+                    .name(name)
+                    .address(address)
+                    .phone(phone)
+                    .build();
+
+            return  user;
+        }
+    }
+
     @Getter
     @Builder
     public static class Response {
