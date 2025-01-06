@@ -21,6 +21,12 @@ public interface UserMapper {
     @Select("SELECT * FROM users WHERE userid = #{userId}")
     Optional<User> findByUserId(String userId);
 
+    @Select("SELECT * FROM users WHERE userid = #{userId}")
+    boolean existsByUserId(String userId);
+    
+    
+    
+    
     @Select("SELECT * FROM users")
     List<User> findAll();
 

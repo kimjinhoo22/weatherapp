@@ -24,6 +24,9 @@ public class UserService {
     private final UserMapper userMapper;
     private final UserSession userSession;
 
+    public boolean findPassword(String userId){
+       return userMapper.existsByUserId(userId);
+    }
 
     // 아이디 중복 회원 검증
    public void validateDuplicateUser(RegisterDto.Request dto) {

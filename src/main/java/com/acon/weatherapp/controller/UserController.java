@@ -52,9 +52,25 @@ public class UserController {
         return "register";
     }
 
+    @GetMapping("/password")
+    public String findG( Model model) {
+        return "findPassword";
+    }
+
+    @PostMapping("/password")
+    public String findP(@RequestParam String userId ,Model model) {
+
+        boolean result = userService.findPassword(userId);
+        if(result){
+            return "updatePassword";
+        }
+        return "findPassword";
+    }
+
+
+
     @PostMapping("/register")
     public String registerP(@Valid @ModelAttribute RegisterDto.Request dto , Errors errors , Model model) {
-
 
          if(errors.hasErrors()) {
              for(FieldError fieldError :  errors.getFieldErrors()) {
