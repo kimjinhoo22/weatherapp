@@ -26,10 +26,8 @@ public class UserController {
 
 
     @PostMapping("/login")
-    public String login(@ModelAttribute LoginDto.Request dto  ,HttpSession session , Model model) {
+    public String login(@ModelAttribute LoginDto.Request dto) {
         LoginDto.Response user = userService.login(dto);
-
-//        session.setAttribute("user", user);
         return "redirect:/";
     }
 
@@ -47,19 +45,17 @@ public class UserController {
     }
 
     @GetMapping("/register")
-    public String registerG(Model model) {
-
+    public String registerG() {
         return "register";
     }
 
     @GetMapping("/password")
-    public String findG( Model model) {
+    public String findG() {
         return "findPassword";
     }
 
     @PostMapping("/password")
     public String findP(@RequestParam String userId ,Model model) {
-
         boolean result = userService.findPassword(userId);
         if(result){
             return "updatePassword";
@@ -67,19 +63,17 @@ public class UserController {
         return "findPassword";
     }
 
-
-
     @PostMapping("/register")
     public String registerP(@Valid @ModelAttribute RegisterDto.Request dto , Errors errors , Model model) {
+        // 유효성검사 에러 존재시 진행 ->
 
          if(errors.hasErrors()) {
-             for(FieldError fieldError :  errors.getFieldErrors()) {
-                 model.addAttribute( fieldError.getField(), fieldError.getDefaultMessage());
-             }
+             userService.errorsHandler(errors,model);
              model.addAttribute("user" , dto);
              return "register";
          }
 
+         // 유효성검사 에러가 없다면 진행 ->
         RegisterDto.Response userInfo = userService.register(dto);
             model.addAttribute("userInfo"  , userInfo);
             return "regisSuccess";
@@ -87,7 +81,7 @@ public class UserController {
     }
 
     @GetMapping("/my-page")
-    public String my_page( Model model){
+    public String my_page(Model model){
         String userId = userSession.getUserId();
         UserInfoDto.Response user  = userService.getUserInfo(userId);
         model.addAttribute("userInfo", user);
@@ -104,7 +98,6 @@ public class UserController {
 
     @PostMapping("/my-page/edit")
     public String my_page_edit_P(@ModelAttribute UserInfoDto.Request dto , Model model){
-        System.out.println(dto.getName());
         userService.updateUser(dto);
         return "redirect:/user/my-page";
     }

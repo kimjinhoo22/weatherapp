@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Update;
 import java.util.List;
 import java.util.Optional;
 
+
 @Mapper
 public interface UserMapper {
 
@@ -23,10 +24,7 @@ public interface UserMapper {
 
     @Select("SELECT * FROM users WHERE userid = #{userId}")
     boolean existsByUserId(String userId);
-    
-    
-    
-    
+
     @Select("SELECT * FROM users")
     List<User> findAll();
 

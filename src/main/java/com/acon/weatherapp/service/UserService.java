@@ -12,6 +12,9 @@ import com.acon.weatherapp.session.UserSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 
 
 import java.util.*;
@@ -28,6 +31,13 @@ public class UserService {
        return userMapper.existsByUserId(userId);
     }
 
+    // 유효성 검사 에러 처리 메소드 -> 에러가 난 필드들을 순회하며 모델객체에  키(필드이름):값(에러메시지) 할당
+    public void errorsHandler(Errors errors , Model model){
+        for(FieldError fieldError :  errors.getFieldErrors()) {
+            model.addAttribute( fieldError.getField(), fieldError.getDefaultMessage());
+        }
+    }
+
     // 아이디 중복 회원 검증
    public void validateDuplicateUser(RegisterDto.Request dto) {
         userMapper.findByUserId(dto.getUserId())
@@ -40,12 +50,14 @@ public class UserService {
         return userMapper.findAll();
     }
 
+
     // 회원 가입
     @Transactional
     public RegisterDto.Response register(RegisterDto.Request dto) {
         if(!dto.getPassword().equals(dto.getConfirmPassword())){
             throw new NotMachedPasswordException("비밀번호 확인이 일치하지 않습니다.", dto);
         }
+
         validateDuplicateUser(dto);
         userMapper.save(dto.toEntity());
 
@@ -59,7 +71,7 @@ public class UserService {
     public LoginDto.Response login(LoginDto.Request dto) {
 
         LoginDto.Response result = userMapper.findByUserId(dto.getUserId())
-                                    .filter(user -> dto.getPassword().equals(user.getPassword()))
+                                    .filter(user -> dto.getPassword().equals(user.getPassword())) //user
                                     .map(LoginDto.Response::from)
                                     .orElseThrow(() -> new NotFoundUserException("입력한 회원을 찾을 수 없습니다." , dto));
 
@@ -73,12 +85,12 @@ public class UserService {
        return  userMapper
                 .findByUserId(userId)
                 .map(UserInfoDto.Response::from)
-                .orElse(null);
+                .orElseThrow(() -> new NotFoundUserException("user notfound : " + userId));
 
     }
 
+    @Transactional
     public void updateUser(UserInfoDto.Request dto) {
          userMapper.update(dto.toEntity());
-        System.out.println(" 저장 완료 ");
     }
 }
