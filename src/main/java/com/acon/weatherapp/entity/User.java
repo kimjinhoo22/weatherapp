@@ -4,18 +4,19 @@ package com.acon.weatherapp.entity;
 //DTO 와 핵심 도메인 분리
 //컨트롤러에는 도메인을 호출하지 않음.
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.stereotype.Component;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Component
 public class User {
     private Long id;
     private String name;

@@ -84,10 +84,6 @@ class UserServiceTest {
         users.add(user);
         users.add(user2);
 
-
-        UserService userService = new UserService(userMapper,userSession);
-
-
     }
 
     @Test

@@ -4,7 +4,10 @@ package com.acon.weatherapp.exception;
 import com.acon.weatherapp.dto.RegisterDto;
 
 public class NotMachedPasswordException extends RuntimeException {
-    private final RegisterDto.Request dto;
+    private  RegisterDto.Request dto;
+    public NotMachedPasswordException(String message) {
+        super(message);
+    }
     public NotMachedPasswordException(String message, RegisterDto.Request dto) {
         super(message);
         this.dto = dto;

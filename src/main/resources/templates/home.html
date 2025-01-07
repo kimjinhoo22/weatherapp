@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+                                                                >
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -9,19 +11,18 @@
     <!--/*@thymesVar id="userSession" type=""*/-->
 
 
-
-    <th:block th:if="${@userSession == null || @userSession.userId == null}">
-        <form action="/user/login" method="post">
-            ID : <input type="text" name="userId" required
+    <th:block sec:authorize="!isAuthenticated()">
+        <form action="/login" method="post">
+            ID : <input type="text" name="username" required
                         placeholder="아이디를 입력하세요" th:value="${user != null ? user.userId : ''}"><br>
             Password : <input type="password" name="password" required
-                              placeholder="비밀번호를 입력하세요" th:value="${user != null ? user.password : ''}"><br>
+                              placeholder="비밀번호를 입력하세요" ><br>
             <button type="submit">로그인</button>
         </form>
     </th:block>
-    <th:block th:if="${@userSession!= null && @userSession.userId != null }">
-        <p>안녕하세요, <span th:text="${@userSession.userId}"></span>님</p>
-        <a href=/user/my-page>마이페이지</a> <a href="/user/logout">로그아웃</a>
+    <th:block sec:authorize="isAuthenticated()">
+        <p>안녕하세요, <span sec:authentication="name"></span>님</p>
+        <a href=/user/my-page>마이페이지</a> <a href="/logout">로그아웃</a>
     </th:block>
     <div>
         <a href="/user/register">회원가입</a>
@@ -31,7 +32,7 @@
     </div>
 
 
-    <p th:if="${message != null}" th:text="${message}" style="color: red"></p>
+    <p th:if="${param.errorMessage != null}" th:text="${param.errorMessage}" style="color: red"></p>
 
 
 </body>

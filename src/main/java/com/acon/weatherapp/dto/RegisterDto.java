@@ -32,6 +32,7 @@ public class RegisterDto {
         private String address;
         @NotBlank(message = "핸드폰 번호를 입력하세요")
         private String phone;
+        private String role;
 
         public Request(String userId){
             this.userId = userId;
@@ -47,7 +48,7 @@ public class RegisterDto {
                     .gender(gender)
                     .address(address)
                     .phone(phone)
-                    .role("USER")
+                    .role(role)
                     .build();
 
             return  user;

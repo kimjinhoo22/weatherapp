@@ -4,6 +4,8 @@ package com.acon.weatherapp.handler;
 import com.acon.weatherapp.exception.DuplicateException;
 import com.acon.weatherapp.exception.NotFoundUserException;
 import com.acon.weatherapp.exception.NotMachedPasswordException;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,7 +24,6 @@ public class GlobalExceptionHandler {
 //        return "home";
 //    }
 
-
     @ExceptionHandler(NotMachedPasswordException.class)
     public String handleNotMachedPasswordException(NotMachedPasswordException e , Model model) {
         model.addAttribute("message", e.getMessage());
@@ -38,12 +39,11 @@ public class GlobalExceptionHandler {
         return "register";
     }
 
-    @ExceptionHandler(NotFoundUserException.class)
-    public String handlerNotFoundUserException(Model model, NotFoundUserException e) {
-        model.addAttribute("user", e.getDto());
-        model.addAttribute("message", e.getMessage());
-        return "home";
-    }
-
+//    @ExceptionHandler(NotFoundUserException.class)
+//    public String handlerNotFoundUserException(Model model, NotFoundUserException e) {
+//        model.addAttribute("user", e.getDto());
+//        model.addAttribute("message", e.getMessage());
+//        return "home";
+//    }
 
 }

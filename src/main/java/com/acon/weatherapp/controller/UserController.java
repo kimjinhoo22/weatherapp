@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -25,19 +26,19 @@ public class UserController {
     private final UserSession userSession;
 
 
-    @PostMapping("/login")
-    public String login(@ModelAttribute LoginDto.Request dto  ,HttpSession session , Model model) {
-        LoginDto.Response user = userService.login(dto);
-
-//        session.setAttribute("user", user);
-        return "redirect:/";
-    }
-
-    @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        session.invalidate();
-        return "redirect:/";
-    }
+//    @PostMapping("/login")
+//    public String login(@ModelAttribute LoginDto.Request dto  ,HttpSession session , Model model) {
+//        LoginDto.Response user = userService.login(dto);
+//
+////        session.setAttribute("user", user);
+//        return "redirect:/";
+//    }
+//
+//    @GetMapping("/logout")
+//    public String logout(HttpSession session) {
+//        session.invalidate();
+//        return "redirect:/";
+//    }
 
     @GetMapping("/list")
     public ResponseEntity<List<User>> listG(Model model) {
@@ -58,13 +59,19 @@ public class UserController {
     }
 
     @PostMapping("/password")
-    public String findP(@RequestParam String userId ,Model model) {
+    public String findP(@RequestParam String userId , Model model) {
 
         boolean result = userService.findPassword(userId);
         if(result){
+            model.addAttribute("userId",userId);
             return "updatePassword";
         }
         return "findPassword";
+    }
+    @PostMapping("/password/update")
+    public String updatePass(@RequestParam String userId ,@RequestParam String oldPassword , @RequestParam String newPassword ,Model model) {
+        userService.updatePassword(userId , oldPassword ,newPassword);
+        return "updateSuccessPassword";
     }
 
 
@@ -88,7 +95,7 @@ public class UserController {
 
     @GetMapping("/my-page")
     public String my_page( Model model){
-        String userId = userSession.getUserId();
+        String userId =SecurityContextHolder.getContext().getAuthentication().getName();
         UserInfoDto.Response user  = userService.getUserInfo(userId);
         model.addAttribute("userInfo", user);
         return "my-page";
@@ -96,7 +103,7 @@ public class UserController {
 
     @GetMapping("/my-page/edit")
     public String my_page_edit( Model model){
-        String userId = userSession.getUserId();
+        String userId =SecurityContextHolder.getContext().getAuthentication().getName();
         UserInfoDto.Response userInfo = userService.getUserInfo(userId);
         model.addAttribute("userInfo", userInfo);
         return "my-page-edit";
